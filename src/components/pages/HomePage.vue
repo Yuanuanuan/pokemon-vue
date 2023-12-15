@@ -17,7 +17,7 @@
           </button>
         </div>
       </div>
-      <PokemonCard />
+      <PokemonCard :id="pokemonId" />
     </div>
   </div>
 </template>
@@ -67,6 +67,7 @@ import TheLoading from "../TheLoading.vue";
 const pokemonData = ref<IPokemon[]>([]);
 const nextUrl = ref("https://pokeapi.co/api/v2/pokemon");
 const isLoading = ref(false);
+const pokemonId = ref(1);
 
 function LearnMore() {
   fetchData(nextUrl.value);

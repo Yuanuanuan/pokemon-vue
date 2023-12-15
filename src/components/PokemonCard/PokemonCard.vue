@@ -6,32 +6,31 @@
           <BackIcon />
         </div>
         <div class="header">
-          <div class="name">{info.name}</div>
+          <!-- <div class="name">{{ currentPokemon.name }}</div> -->
           <div class="love-icon">
             <LoveIcon />
           </div>
         </div>
         <div class="types-id">
           <div class="types">
-            {info.types.map((type, index) => { return (
+            {currentPokemon.types.map((type, index) => { return (
             <div class="type" key="{index}">{type.type.name}</div>
             ) }) }
           </div>
           <div class="id">
-            { info.id.toString().length === 1 ? `#000${info.id}` :
-            info.id.toString().length === 2 ? `#00${info.id}` :
-            info.id.toString().length === 3 ? `#0${info.id}` : `#${info.id}` }
+            <!-- {{
+              currentPokemon.id.toString().length === 1
+                ? `#000${info.id}`
+                : info.id.toString().length === 2
+                ? `#00${info.id}`
+                : info.id.toString().length === 3
+                ? `#0${info.id}`
+                : `#${info.id}`
+            }} -->
           </div>
         </div>
         <div class="pokemon-image">
-          <!-- <img
-            src=""
-            isShiny
-            ?
-            info.sprites.other.home.front_shiny
-            info.sprites.other.home.front_default
-            alt=""
-          /> -->
+          <img :src="imgUrl" />
         </div>
         <div class="pokemon-ball">
           <div class="{`ball-inside ${info.types[0].type.name}`}"></div>
@@ -46,19 +45,94 @@
           </div>
         </div>
         <div class="info-content">
-          <TheAbout />
-          <TheMoves />
+          <!-- <TheAbout />
+          <TheMoves /> -->
         </div>
       </div>
     </div>
   </div>
 </template>
 
+<!-- <script lang="ts">
+interface IStringObj {
+  [key: string]: string;
+}
+
+interface IMove {
+  move: IStringObj;
+}
+
+interface IOther {
+  [key: string]: IHome;
+}
+
+interface IHome {
+  [key: string]: string;
+}
+
+interface IType {
+  slot: number;
+  type: IStringObj;
+}
+
+interface IPokemon {
+  height: number;
+  id: number;
+  moves: IMove[];
+  name: string;
+  sprites: {
+    other: IOther;
+  };
+  types: IType[];
+}
+</script> -->
+
 <script setup lang="ts">
+import { onMounted, ref, reactive } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
-import TheAbout from "./TheAbout.vue";
-import TheMoves from "./TheMoves.vue";
+
+const currentPokemon = reactive({
+  sprites: {
+    other: {
+      home: {
+        front_default: "",
+      },
+    },
+  },
+});
+
+const props = defineProps({
+  id: {
+    type: Number,
+    required: true,
+  },
+});
+
+const imgUrl = ref(currentPokemon.sprites.other.home.front_default);
+
+async function fetchData(url: string) {
+  return fetch(url)
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Error!!!!!");
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log(data);
+      Object.assign(currentPokemon, data);
+    });
+}
+
+onMounted(async () => {
+  try {
+    await fetchData(`https://pokeapi.co/api/v2/pokemon/${props.id}`);
+    imgUrl.value = currentPokemon.sprites.other.home.front_default;
+  } catch (error) {
+    console.error(error);
+  }
+});
 </script>
 
 <style>
@@ -155,8 +229,8 @@ import TheMoves from "./TheMoves.vue";
   display: flex;
 }
 .pokemon-card-wrapper .pokemon-card-box .box-top .pokemon-image img {
-  width: 300px;
-  height: 300px;
+  width: 280px;
+  height: 280px;
 }
 .pokemon-card-wrapper .pokemon-card-box .box-top .pokemon-ball {
   width: 100%;
