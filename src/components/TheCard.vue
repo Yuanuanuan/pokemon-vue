@@ -19,19 +19,16 @@
     </div>
     <div class="pokemon-ball">
       <div class="ball-inside" :class="bgColor"></div>
-      <div class="ball-outside" :class="Color"></div>
+      <div class="ball-outside" :class="bgColor"></div>
     </div>
   </div>
 </template>
 
-<!-- <script lang="ts">
-interface IPokemon {
-  name: string;
-  url: string;
-}
-</script> -->
+<script lang="ts">
 
-<script setup>
+</script>
+
+<script setup lang="ts">
 import { ref } from "vue";
 
 const props = defineProps({

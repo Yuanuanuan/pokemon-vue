@@ -26,14 +26,13 @@
   </div>
 </template>
 
-<!-- <script lang="ts">
-interface IPokemon {
-  name: string;
-  url: string;
+<script lang="ts">
+interface IStringObj {
+  [key: string]: string;
 }
-</script> -->
+</script>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, ref } from "vue";
 
 import TheSearch from "../TheSearch.vue";
@@ -41,14 +40,14 @@ import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
-const pokemonData = ref([]);
+const pokemonData = ref<IStringObj[]>([]);
 const nextUrl = ref("https://pokeapi.co/api/v2/pokemon");
 const isLoading = ref(false);
 // const inputValue = ref("");
 // const SearchData = ref([]);
 // const isSearching = ref(false);
 
-async function fetchData(url) {
+async function fetchData(url: string) {
   isLoading.value = true;
 
   try {
@@ -56,12 +55,11 @@ async function fetchData(url) {
     if (!response.ok) {
       throw new Error("Network response was not ok");
     }
-
     const data = await response.json();
     nextUrl.value = data.next;
 
     const pokemonDetails = await Promise.all(
-      data.results.map(async (item) => {
+      data.results.map(async (item: IStringObj) => {
         const res = await fetch(item.url);
         if (!res.ok) {
           throw new Error("Network response was not ok");
@@ -70,11 +68,12 @@ async function fetchData(url) {
       })
     );
 
+    console.log(pokemonDetails);
+
     pokemonData.value = pokemonData.value.concat(pokemonDetails);
-    console.log(pokemonDetails); // 檢查詳細資料是否正確
-    isLoading.value = false;
   } catch (error) {
     console.error("Error fetching data:", error);
+  } finally {
     isLoading.value = false;
   }
 }
