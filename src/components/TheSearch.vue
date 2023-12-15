@@ -5,21 +5,16 @@
         <SearchIcon />
       </div>
       <input
-        :v-model="input"
         type="text"
         class="search-input"
         placeholder="search pokemon..."
-        onKeyDown="{handleKeyDown}"
       />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
 import SearchIcon from "../assets/icons/SearchIcon.vue";
-
-const input = ref("");
 </script>
 
 <style>

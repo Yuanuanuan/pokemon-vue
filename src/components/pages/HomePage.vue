@@ -3,12 +3,6 @@
     <div class="main-container-wrapper flex">
       <div class="cards-container">
         <TheSearch />
-        <!-- <div class="cards flex">
-          <Card />
-          <div class="not-found-wrapper">
-            <h1>No matching Pokémon found</h1>
-          </div>
-        </div> -->
         <div class="cards flex">
           <TheCard
             v-for="pokemon in pokemonData"
@@ -18,7 +12,9 @@
         </div>
         <div class="learn-more flex">
           <TheLoading v-if="isLoading" />
-          <button v-else class="learn-more-btn">Learn More</button>
+          <button v-else class="learn-more-btn" @click="LearnMore">
+            Learn More
+          </button>
         </div>
       </div>
       <PokemonCard />
@@ -71,9 +67,10 @@ import TheLoading from "../TheLoading.vue";
 const pokemonData = ref<IPokemon[]>([]);
 const nextUrl = ref("https://pokeapi.co/api/v2/pokemon");
 const isLoading = ref(false);
-// const inputValue = ref("");
-// const SearchData = ref([]);
-// const isSearching = ref(false);
+
+function LearnMore() {
+  fetchData(nextUrl.value);
+}
 
 async function fetchData(url: string) {
   isLoading.value = true;
