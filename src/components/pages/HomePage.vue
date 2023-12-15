@@ -30,6 +30,34 @@
 interface IStringObj {
   [key: string]: string;
 }
+
+interface IMove {
+  move: IStringObj;
+}
+
+interface IOther {
+  [key: string]: IHome;
+}
+
+interface IHome {
+  [key: string]: string;
+}
+
+interface IType {
+  slot: number;
+  type: IStringObj;
+}
+
+interface IPokemon {
+  height: number;
+  id: number;
+  moves: IMove[];
+  name: string;
+  sprites: {
+    other: IOther;
+  };
+  types: IType[];
+}
 </script>
 
 <script setup lang="ts">
@@ -40,7 +68,7 @@ import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
-const pokemonData = ref<IStringObj[]>([]);
+const pokemonData = ref<IPokemon[]>([]);
 const nextUrl = ref("https://pokeapi.co/api/v2/pokemon");
 const isLoading = ref(false);
 // const inputValue = ref("");
@@ -58,7 +86,7 @@ async function fetchData(url: string) {
     const data = await response.json();
     nextUrl.value = data.next;
 
-    const pokemonDetails = await Promise.all(
+    const pokemonDetails: IPokemon[] = await Promise.all(
       data.results.map(async (item: IStringObj) => {
         const res = await fetch(item.url);
         if (!res.ok) {

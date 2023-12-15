@@ -24,46 +24,12 @@
   </div>
 </template>
 
-<script lang="ts">
-interface IStringObj {
-  [key: string]: string;
-}
-
-interface IMove {
-  move: IStringObj;
-}
-
-interface IOther {
-  [key: string]: IHome;
-}
-
-interface IHome {
-  [key: string]: string;
-}
-
-interface IType {
-  slot: number;
-  type: IStringObj;
-}
-
-interface IPokemon {
-  height: number;
-  id: number;
-  moves: IMove[];
-  name: String;
-  sprites: {
-    other: IOther;
-  };
-  types: IType[];
-}
-</script>
-
 <script setup lang="ts">
-import { ref, PropType } from "vue";
+import { ref } from "vue";
 
 const props = defineProps({
   pokemon: {
-    type: Object as PropType<IPokemon>,
+    type: Object,
     required: true,
   },
 });
