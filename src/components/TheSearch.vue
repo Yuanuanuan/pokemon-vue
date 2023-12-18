@@ -5,16 +5,39 @@
         <SearchIcon />
       </div>
       <input
-        type="text"
+        v-model="inputValue"
+        @input="searchSuggestion"
+        list="suggestions"
+        type="search"
         class="search-input"
         placeholder="search pokemon..."
       />
     </div>
   </div>
+
+  <datalist id="suggestions">
+    <option v-for="suggest in suggestion.slice(0, 10)" :value="suggest">
+      {{ suggest }}
+    </option>
+  </datalist>
 </template>
 
 <script setup lang="ts">
+import { ref } from "vue";
+import { pokemonName } from "../../public/pokemonName.ts";
 import SearchIcon from "../assets/icons/SearchIcon.vue";
+
+const inputValue = ref("");
+const suggestion = ref<string[]>([]);
+
+function searchSuggestion() {
+  const inputLength = inputValue.value.length;
+  suggestion.value = pokemonName.filter(
+    (name) =>
+      inputValue.value.toLowerCase() ===
+      name.toLowerCase().substring(0, inputLength)
+  );
+}
 </script>
 
 <style>

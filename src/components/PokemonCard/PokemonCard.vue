@@ -96,7 +96,6 @@ function changeNav(event: MouseEvent) {
 async function fetchData() {
   try {
     const { data } = await getPokemons.get(props.url);
-    console.log(data);
     currentPokemon.value = data as IPokemon;
     bgColor.value = data.types[0].type.name;
   } catch (error) {
