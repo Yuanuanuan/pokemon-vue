@@ -30,7 +30,10 @@
           </div>
         </div>
         <div class="pokemon-image">
-          <img :src="imgUrl" />
+          <img
+            v-if="currentPokemon"
+            :src="currentPokemon.sprites.other.home.front_default"
+          />
         </div>
         <div class="pokemon-ball">
           <div class="{`ball-inside ${info.types[0].type.name}`}"></div>
@@ -53,85 +56,43 @@
   </div>
 </template>
 
-<!-- <script lang="ts">
-interface IStringObj {
-  [key: string]: string;
-}
-
-interface IMove {
-  move: IStringObj;
-}
-
-interface IOther {
-  [key: string]: IHome;
-}
-
-interface IHome {
-  [key: string]: string;
-}
-
-interface IType {
-  slot: number;
-  type: IStringObj;
-}
-
-interface IPokemon {
-  height: number;
-  id: number;
-  moves: IMove[];
-  name: string;
-  sprites: {
-    other: IOther;
-  };
-  types: IType[];
-}
-</script> -->
-
 <script setup lang="ts">
-import { onMounted, ref, reactive } from "vue";
+import { getPokemons } from "../../api/getPokemons";
+
+import { IPokemon } from "../../../type/IPokemon";
+
+import { onMounted, ref, watch } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
 
-const currentPokemon = reactive({
-  sprites: {
-    other: {
-      home: {
-        front_default: "",
-      },
-    },
-  },
-});
+const currentPokemon = ref<IPokemon | null>(null);
 
 const props = defineProps({
-  id: {
-    type: Number,
+  url: {
+    type: String,
     required: true,
   },
 });
 
-const imgUrl = ref(currentPokemon.sprites.other.home.front_default);
-
-async function fetchData(url: string) {
-  return fetch(url)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error("Error!!!!!");
-      }
-      return res.json();
-    })
-    .then((data) => {
-      console.log(data);
-      Object.assign(currentPokemon, data);
-    });
-}
-
-onMounted(async () => {
+async function fetchData() {
   try {
-    await fetchData(`https://pokeapi.co/api/v2/pokemon/${props.id}`);
-    imgUrl.value = currentPokemon.sprites.other.home.front_default;
+    const { data } = await getPokemons.get(props.url);
+    console.log(data);
+    currentPokemon.value = data as IPokemon;
   } catch (error) {
     console.error(error);
   }
+}
+
+watch(
+  () => props.url,
+  () => {
+    fetchData();
+  }
+);
+
+onMounted(async () => {
+  fetchData();
 });
 </script>
 

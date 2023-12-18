@@ -8,6 +8,7 @@
             v-for="pokemon in pokemonData"
             :pokemonInfo="pokemon"
             :key="pokemon.name"
+            @click="onSelectedPokemon(pokemon.url)"
           />
         </div>
         <div class="learn-more flex">
@@ -17,7 +18,7 @@
           </button>
         </div>
       </div>
-      <PokemonCard :id="pokemonId" />
+      <PokemonCard :url="pokemonId" />
     </div>
   </div>
 </template>
@@ -36,10 +37,15 @@ import TheLoading from "../TheLoading.vue";
 const pokemonData = ref<IStringObj[]>([]);
 let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 const isLoading = ref(false);
-const pokemonId = ref(1);
+const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
 
 function LearnMore() {
   fetchData(nextUrl);
+}
+
+function onSelectedPokemon(url: string) {
+  console.log(url);
+  pokemonId.value = url;
 }
 
 async function fetchData(url: string) {
@@ -47,7 +53,6 @@ async function fetchData(url: string) {
 
   try {
     const { data } = await getPokemons.get(url);
-    console.log(data);
     nextUrl = data.next;
     pokemonData.value = data.results;
   } catch (error) {

@@ -43,7 +43,6 @@ const bgColor = ref("");
 
 onMounted(async () => {
   const { data } = await axios.get<IPokemon>(props.pokemonInfo.url);
-  console.log(data);
   pokemon.value = data;
   imgUrl.value = data.sprites.other.home.front_default;
   bgColor.value = data.types[0].type.name;
