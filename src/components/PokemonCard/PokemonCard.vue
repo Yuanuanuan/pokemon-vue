@@ -1,43 +1,38 @@
 <template>
-  <div class="pokemon-card-wrapper">
-    <div class="{`pokemon-card-box flex ${info.types[0].type.name}`}">
+  <div v-if="currentPokemon" class="pokemon-card-wrapper">
+    <div class="pokemon-card-box flex" :class="bgColor">
       <div class="box-top">
         <div class="back-icon">
           <BackIcon />
         </div>
         <div class="header">
-          <!-- <div class="name">{{ currentPokemon.name }}</div> -->
+          <div class="name">
+            {{ currentPokemon.name }}
+          </div>
           <div class="love-icon">
             <LoveIcon />
           </div>
         </div>
         <div class="types-id">
           <div class="types">
-            {currentPokemon.types.map((type, index) => { return (
-            <div class="type" key="{index}">{type.type.name}</div>
-            ) }) }
+            <div
+              class="type"
+              v-for="(type, index) in currentPokemon.types"
+              :key="index"
+            >
+              {{ type.type.name }}
+            </div>
           </div>
           <div class="id">
-            <!-- {{
-              currentPokemon.id.toString().length === 1
-                ? `#000${info.id}`
-                : info.id.toString().length === 2
-                ? `#00${info.id}`
-                : info.id.toString().length === 3
-                ? `#0${info.id}`
-                : `#${info.id}`
-            }} -->
+            {{ formattedId }}
           </div>
         </div>
         <div class="pokemon-image">
-          <img
-            v-if="currentPokemon"
-            :src="currentPokemon.sprites.other.home.front_default"
-          />
+          <img :src="currentPokemon.sprites.other.home.front_default" />
         </div>
         <div class="pokemon-ball">
-          <div class="{`ball-inside ${info.types[0].type.name}`}"></div>
-          <div class="{`ball-outside ${info.types[0].type.name}`}"></div>
+          <div class="ball-inside" :class="bgColor"></div>
+          <div class="ball-outside" :class="bgColor"></div>
         </div>
       </div>
       <div class="box-bottom">
@@ -61,11 +56,12 @@ import { getPokemons } from "../../api/getPokemons";
 
 import { IPokemon } from "../../../type/IPokemon";
 
-import { onMounted, ref, watch } from "vue";
+import { onMounted, ref, watch, computed } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
 
 const currentPokemon = ref<IPokemon | null>(null);
+const bgColor = ref<string>("");
 
 const props = defineProps({
   url: {
@@ -79,10 +75,29 @@ async function fetchData() {
     const { data } = await getPokemons.get(props.url);
     console.log(data);
     currentPokemon.value = data as IPokemon;
+    bgColor.value = data.types[0].type.name;
   } catch (error) {
     console.error(error);
   }
 }
+
+const formattedId = computed(() => {
+  if (currentPokemon.value) {
+    const stringId: string = currentPokemon.value.id.toString();
+
+    switch (stringId.length) {
+      case 1:
+        return `#000${stringId}`;
+      case 2:
+        return `#00${stringId}`;
+      case 3:
+        return `#0${stringId}`;
+      default:
+        return `#${stringId}`;
+    }
+  }
+  return "";
+});
 
 watch(
   () => props.url,
