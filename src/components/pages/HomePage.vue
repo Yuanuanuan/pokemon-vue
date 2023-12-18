@@ -6,7 +6,7 @@
         <div class="cards flex">
           <TheCard
             v-for="pokemon in pokemonData"
-            :pokemon="pokemon"
+            :pokemonInfo="pokemon"
             :key="pokemon.name"
           />
         </div>
@@ -25,7 +25,7 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
-import { IStringObj, IPokemon } from "../../../type/IPokemon";
+import { IStringObj } from "../../../type/IPokemon";
 import { getPokemons } from "../../api/getPokemons";
 
 import TheSearch from "../TheSearch.vue";
@@ -33,7 +33,7 @@ import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
-const pokemonData = ref<IPokemon[]>([]);
+const pokemonData = ref<IStringObj[]>([]);
 let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 const isLoading = ref(false);
 const pokemonId = ref(1);
@@ -47,20 +47,9 @@ async function fetchData(url: string) {
 
   try {
     const { data } = await getPokemons.get(url);
-
     console.log(data);
     nextUrl = data.next;
-
-    const pokemonDetails: IPokemon[] = await Promise.all(
-      data.results.map(async (item: IStringObj) => {
-        const { data } = await getPokemons.get(item.url);
-        return data;
-      })
-    );
-
-    console.log(pokemonDetails);
-
-    pokemonData.value = pokemonData.value.concat(pokemonDetails);
+    pokemonData.value = data.results;
   } catch (error) {
     console.error("Error fetching data:", error);
   } finally {

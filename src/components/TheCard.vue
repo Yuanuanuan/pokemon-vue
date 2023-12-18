@@ -25,19 +25,29 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, PropType } from "vue";
+import axios from "axios";
+import { ref, defineProps, PropType, onMounted } from "vue";
 
-import { IPokemon } from "../../type/IPokemon";
+import { IStringObj, IPokemon } from "../../type/IPokemon";
 
 const props = defineProps({
-  pokemon: {
-    type: Object as PropType<IPokemon>,
+  pokemonInfo: {
+    type: Object as PropType<IStringObj>,
     required: true,
   },
 });
 
-const imgUrl = ref(props.pokemon.sprites.other.home.front_default);
-const bgColor = ref(props.pokemon.types[0].type.name);
+const pokemon = ref<IPokemon>();
+const imgUrl = ref("");
+const bgColor = ref("");
+
+onMounted(async () => {
+  const { data } = await axios.get<IPokemon>(props.pokemonInfo.url);
+  console.log(data);
+  pokemon.value = data;
+  imgUrl.value = data.sprites.other.home.front_default;
+  bgColor.value = data.types[0].type.name;
+});
 </script>
 
 <style>
