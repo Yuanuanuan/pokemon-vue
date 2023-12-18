@@ -25,11 +25,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, defineProps, PropType } from "vue";
+
+import { IPokemon } from "../../type/IPokemon";
 
 const props = defineProps({
   pokemon: {
-    type: Object,
+    type: Object as PropType<IPokemon>,
     required: true,
   },
 });

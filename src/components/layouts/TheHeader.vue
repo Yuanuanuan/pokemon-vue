@@ -1,7 +1,7 @@
 <template>
   <div class="header-wrapper">
     <div class="logo-icon">
-      <!-- <img src="../../assets/pokemon-logo.png" alt="logo" /> -->
+      <img src="../../assets/pokemon-logo.png" alt="logo" />
     </div>
     <div class="tools flex">
       <Link to="/" class="link">

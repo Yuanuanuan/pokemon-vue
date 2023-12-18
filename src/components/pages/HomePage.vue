@@ -22,42 +22,10 @@
   </div>
 </template>
 
-<script lang="ts">
-interface IStringObj {
-  [key: string]: string;
-}
-
-interface IMove {
-  move: IStringObj;
-}
-
-interface IOther {
-  [key: string]: IHome;
-}
-
-interface IHome {
-  [key: string]: string;
-}
-
-interface IType {
-  slot: number;
-  type: IStringObj;
-}
-
-interface IPokemon {
-  height: number;
-  id: number;
-  moves: IMove[];
-  name: string;
-  sprites: {
-    other: IOther;
-  };
-  types: IType[];
-}
-</script>
-
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
+
+import { IStringObj, IPokemon } from "../../../type/IPokemon";
 
 import TheSearch from "../TheSearch.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
@@ -65,12 +33,12 @@ import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
 const pokemonData = ref<IPokemon[]>([]);
-const nextUrl = ref("https://pokeapi.co/api/v2/pokemon");
+let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 const isLoading = ref(false);
 const pokemonId = ref(1);
 
 function LearnMore() {
-  fetchData(nextUrl.value);
+  fetchData(nextUrl);
 }
 
 async function fetchData(url: string) {
@@ -82,7 +50,7 @@ async function fetchData(url: string) {
       throw new Error("Network response was not ok");
     }
     const data = await response.json();
-    nextUrl.value = data.next;
+    nextUrl = data.next;
 
     const pokemonDetails: IPokemon[] = await Promise.all(
       data.results.map(async (item: IStringObj) => {
@@ -104,7 +72,7 @@ async function fetchData(url: string) {
   }
 }
 
-onMounted(() => fetchData(nextUrl.value));
+onMounted(() => fetchData(nextUrl));
 </script>
 
 <style>
