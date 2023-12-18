@@ -26,6 +26,7 @@
 import { onMounted, ref } from "vue";
 
 import { IStringObj, IPokemon } from "../../../type/IPokemon";
+import { getPokemons } from "../../api/getPokemons";
 
 import TheSearch from "../TheSearch.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
@@ -45,20 +46,15 @@ async function fetchData(url: string) {
   isLoading.value = true;
 
   try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error("Network response was not ok");
-    }
-    const data = await response.json();
+    const { data } = await getPokemons.get(url);
+
+    console.log(data);
     nextUrl = data.next;
 
     const pokemonDetails: IPokemon[] = await Promise.all(
       data.results.map(async (item: IStringObj) => {
-        const res = await fetch(item.url);
-        if (!res.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return res.json();
+        const { data } = await getPokemons.get(item.url);
+        return data;
       })
     );
 
