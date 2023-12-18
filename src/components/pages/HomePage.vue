@@ -44,7 +44,6 @@ function LearnMore() {
 }
 
 function onSelectedPokemon(url: string) {
-  console.log(url);
   pokemonId.value = url;
 }
 
@@ -54,7 +53,7 @@ async function fetchData(url: string) {
   try {
     const { data } = await getPokemons.get(url);
     nextUrl = data.next;
-    pokemonData.value = data.results;
+    pokemonData.value = pokemonData.value.concat(data.results);
   } catch (error) {
     console.error("Error fetching data:", error);
   } finally {

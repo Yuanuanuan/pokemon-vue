@@ -49,7 +49,7 @@ onMounted(async () => {
 });
 </script>
 
-<style>
+<style scoped>
 .flex {
   display: flex;
   justify-content: center;

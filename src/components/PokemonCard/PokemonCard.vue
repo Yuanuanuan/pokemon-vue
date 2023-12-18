@@ -38,13 +38,25 @@
       <div class="box-bottom">
         <div class="navBar">
           <div class="nav-box">
-            <div class="about">About</div>
-            <div class="moves">Moves</div>
+            <div
+              class="about"
+              :class="{ active: currentNav === 'About' }"
+              @click="changeNav($event)"
+            >
+              About
+            </div>
+            <div
+              class="moves"
+              :class="{ active: currentNav === 'Moves' }"
+              @click="changeNav($event)"
+            >
+              Moves
+            </div>
           </div>
         </div>
         <div class="info-content">
-          <!-- <TheAbout />
-          <TheMoves /> -->
+          <TheAbout v-if="currentNav === 'About'" :data="currentPokemon" />
+          <TheMoves v-else :data="currentPokemon" />
         </div>
       </div>
     </div>
@@ -59,9 +71,12 @@ import { IPokemon } from "../../../type/IPokemon";
 import { onMounted, ref, watch, computed } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
+import TheAbout from "./TheAbout.vue";
+import TheMoves from "./TheMoves.vue";
 
 const currentPokemon = ref<IPokemon | null>(null);
 const bgColor = ref<string>("");
+const currentNav = ref("About");
 
 const props = defineProps({
   url: {
@@ -69,6 +84,14 @@ const props = defineProps({
     required: true,
   },
 });
+
+function changeNav(event: MouseEvent) {
+  const target = event.target as HTMLElement;
+
+  if (target) {
+    currentNav.value = target.innerText;
+  }
+}
 
 async function fetchData() {
   try {

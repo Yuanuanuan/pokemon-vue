@@ -19,11 +19,18 @@ interface IType {
   type: IStringObj;
 }
 
+interface IStat {
+  base_stat: number;
+  stat: IStringObj;
+}
+
 export interface IPokemon {
   height: number;
+  weight: number;
   id: number;
   moves: IMove[];
   name: string;
+  stats: IStat[];
   sprites: {
     other: IOther;
   };
