@@ -26,14 +26,14 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref, defineProps, PropType, onMounted, watch } from "vue";
+import { ref, defineProps, onMounted, watch } from "vue";
 
-import { IStringObj, IPokemon } from "../../type/IPokemon";
+import { IPokemon, IPokemonInfo } from "../../type/IPokemon";
 import { getPokemons } from "../api/getPokemons.ts";
 
 const props = defineProps({
   pokemonInfo: {
-    type: Object as PropType<IStringObj>,
+    type: String,
   },
   pokemonName: {
     type: String,
@@ -44,28 +44,25 @@ const props = defineProps({
   },
 });
 
-const pokemon = ref<IPokemon>();
+const pokemon = ref<IPokemon | IPokemonInfo>();
 const imgUrl = ref("");
 const bgColor = ref("");
 
-async function fetchCurrentData() {
+async function fetchData() {
   if (props.isSearch) {
     const { data } = await getPokemons.get<IPokemon>(`${props.pokemonName}`);
-    return data;
-  } else if (!props.isSearch && props.pokemonInfo) {
-    const { data } = await axios.get<IPokemon>(props.pokemonInfo.url);
-    return data;
-  }
-}
-
-async function fetchData() {
-  try {
-    const data = (await fetchCurrentData()) as IPokemon;
+    console.log(data);
     pokemon.value = data;
     imgUrl.value = data.sprites.other.home.front_default;
     bgColor.value = data.types[0].type.name;
-  } catch (error) {
-    console.error(error);
+    return data;
+  } else if (!props.isSearch && props.pokemonInfo) {
+    const { data } = await axios.get<IPokemonInfo>(props.pokemonInfo);
+    console.log(data);
+    pokemon.value = data;
+    imgUrl.value = data.sprites.front_default;
+    bgColor.value = data.types[0].type.name;
+    return data;
   }
 }
 

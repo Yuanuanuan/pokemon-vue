@@ -27,6 +27,7 @@ interface IStat {
 export interface IPokemon {
   height: number;
   weight: number;
+  forms: IStringObj[];
   id: number;
   moves: IMove[];
   name: string;
@@ -34,5 +35,15 @@ export interface IPokemon {
   sprites: {
     other: IOther;
   };
+  types: IType[];
+}
+
+export interface IPokemonInfo {
+  id: number;
+  name: string;
+  sprites: {
+    front_default: string;
+  };
+  pokemon: IStringObj;
   types: IType[];
 }

@@ -9,7 +9,10 @@
           <div class="name">
             {{ currentPokemon.name }}
           </div>
-          <div class="love-icon">
+          <div
+            class="love-icon"
+            @click="addFavorite?.(currentPokemon.forms[0].url)"
+          >
             <LoveIcon />
           </div>
         </div>
@@ -68,7 +71,7 @@ import { getPokemons } from "../../api/getPokemons";
 
 import { IPokemon } from "../../../type/IPokemon";
 
-import { onMounted, ref, watch, computed } from "vue";
+import { onMounted, ref, watch, computed, inject } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
 import TheAbout from "./TheAbout.vue";
@@ -84,6 +87,8 @@ const props = defineProps({
     required: true,
   },
 });
+
+const addFavorite = inject<(url: string) => void>("addFavorite");
 
 function changeNav(event: MouseEvent) {
   const target = event.target as HTMLElement;

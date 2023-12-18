@@ -1,13 +1,17 @@
 <template>
   <div class="main-container">
-    <div v-if="lovePokemonData.length > 0" class="main-container-wrapper flex">
+    <div v-if="lovePokemon.length > 0" class="main-container-wrapper flex">
       <div class="cards-container">
         <div class="cards flex">
-          <!-- {data && data.map( (item) => <Card key={item.url} item={item}
-          isShiny={isShiny} onClick={(e) => ClickCard(e)} /> )} -->
+          <TheCard
+            v-for="pokemon in lovePokemon"
+            :key="pokemon"
+            :pokemonInfo="pokemon"
+            :isSearch="false"
+          />
         </div>
       </div>
-      <PokemonCard url="" />
+      <!-- <PokemonCard url="" /> -->
     </div>
     <div v-else class="main-container-wrapper flex">
       <div class="no-favorite">
@@ -24,10 +28,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits } from "vue";
-import PokemonCard from "../PokemonCard/PokemonCard.vue";
+import { defineProps, defineEmits, inject } from "vue";
 
-import { IPokemon } from "../../../type/IPokemon";
+import TheCard from "../TheCard.vue";
+// import PokemonCard from "../PokemonCard/PokemonCard.vue";
 
 defineProps({
   currentNav: { type: String },
@@ -35,5 +39,5 @@ defineProps({
 
 const emits = defineEmits(["change-nav"]);
 
-const lovePokemonData = ref<IPokemon[]>([]);
+const lovePokemon = inject<string[]>("lovePokemon", []);
 </script>
