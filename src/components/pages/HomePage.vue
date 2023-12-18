@@ -2,13 +2,27 @@
   <div class="main-container">
     <div class="main-container-wrapper flex">
       <div class="cards-container">
-        <TheSearch />
+        <TheSearch
+          v-model="inputValue"
+          :suggestion="suggestion"
+          @setSearching="setSearching"
+        />
         <div class="cards flex">
           <TheCard
+            v-if="!isSearching"
             v-for="pokemon in pokemonData"
+            :isSearch="isSearching"
             :pokemonInfo="pokemon"
             :key="pokemon.name"
             @click="onSelectedPokemon(pokemon.url)"
+          />
+          <TheCard
+            v-else
+            v-for="pokemon in suggestion"
+            :isSearch="isSearching"
+            :pokemonName="pokemon"
+            :key="pokemon"
+            @click="onSelectedPokemon(pokemon)"
           />
         </div>
         <div class="learn-more flex">
@@ -24,10 +38,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref, computed } from "vue";
 
 import { IStringObj } from "../../../type/IPokemon";
 import { getPokemons } from "../../api/getPokemons";
+import { pokemonName } from "../../../public/pokemonName.ts";
 
 import TheSearch from "../TheSearch.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
@@ -38,6 +53,9 @@ const pokemonData = ref<IStringObj[]>([]);
 let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 const isLoading = ref(false);
 const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
+const isSearching = ref(false);
+
+const inputValue = ref("");
 
 function LearnMore() {
   fetchData(nextUrl);
@@ -60,6 +78,19 @@ async function fetchData(url: string) {
     isLoading.value = false;
   }
 }
+
+function setSearching(val: boolean) {
+  isSearching.value = val;
+}
+
+const suggestion = computed<string[]>(() => {
+  const inputLength = inputValue.value.length;
+  return pokemonName.filter(
+    (name) =>
+      inputValue.value.toLowerCase() ===
+      name.toLowerCase().substring(0, inputLength)
+  );
+});
 
 onMounted(() => fetchData(nextUrl));
 </script>

@@ -5,8 +5,8 @@
         <SearchIcon />
       </div>
       <input
-        v-model="inputValue"
-        @input="searchSuggestion"
+        :value="modelValue"
+        @input="handleInput($event)"
         list="suggestions"
         type="search"
         class="search-input"
@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  <datalist id="suggestions">
+  <datalist v-if="suggestion" id="suggestions">
     <option v-for="suggest in suggestion.slice(0, 10)" :value="suggest">
       {{ suggest }}
     </option>
@@ -23,21 +23,37 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { pokemonName } from "../../public/pokemonName.ts";
+import { defineProps, defineEmits, watch } from "vue";
 import SearchIcon from "../assets/icons/SearchIcon.vue";
 
-const inputValue = ref("");
-const suggestion = ref<string[]>([]);
+const props = defineProps({
+  modelValue: {
+    type: String,
+  },
+  suggestion: {
+    type: Array,
+  },
+});
 
-function searchSuggestion() {
-  const inputLength = inputValue.value.length;
-  suggestion.value = pokemonName.filter(
-    (name) =>
-      inputValue.value.toLowerCase() ===
-      name.toLowerCase().substring(0, inputLength)
-  );
-}
+const emits = defineEmits(["update:modelValue", "setSearching"]);
+
+const handleInput = (event: Event) => {
+  const target = event.target as HTMLInputElement;
+  if (target) {
+    emits("update:modelValue", target.value);
+  }
+};
+
+watch(
+  () => props.modelValue,
+  (newVal) => {
+    if (newVal === "") {
+      emits("setSearching", false);
+    } else {
+      emits("setSearching", true);
+    }
+  }
+);
 </script>
 
 <style>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="pokemon" :class="bgColor" class="card" data-url="{{item.url}}">
+  <div v-if="pokemon" :class="bgColor" class="card">
     <div class="pokemon-info">
       <div class="pokemon-name">
         {{ pokemon.name.slice(0, 1).toUpperCase() + pokemon.name.slice(1) }}
@@ -26,13 +26,20 @@
 
 <script setup lang="ts">
 import axios from "axios";
-import { ref, defineProps, PropType, onMounted } from "vue";
+import { ref, defineProps, PropType, onMounted, watch } from "vue";
 
 import { IStringObj, IPokemon } from "../../type/IPokemon";
+import { getPokemons } from "../api/getPokemons.ts";
 
 const props = defineProps({
   pokemonInfo: {
     type: Object as PropType<IStringObj>,
+  },
+  pokemonName: {
+    type: String,
+  },
+  isSearch: {
+    type: Boolean,
     required: true,
   },
 });
@@ -41,11 +48,36 @@ const pokemon = ref<IPokemon>();
 const imgUrl = ref("");
 const bgColor = ref("");
 
+async function fetchCurrentData() {
+  if (props.isSearch) {
+    const { data } = await getPokemons.get<IPokemon>(`${props.pokemonName}`);
+    return data;
+  } else if (!props.isSearch && props.pokemonInfo) {
+    const { data } = await axios.get<IPokemon>(props.pokemonInfo.url);
+    return data;
+  }
+}
+
+async function fetchData() {
+  try {
+    const data = (await fetchCurrentData()) as IPokemon;
+    pokemon.value = data;
+    imgUrl.value = data.sprites.other.home.front_default;
+    bgColor.value = data.types[0].type.name;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+watch(
+  () => props.pokemonName,
+  () => {
+    fetchData();
+  }
+);
+
 onMounted(async () => {
-  const { data } = await axios.get<IPokemon>(props.pokemonInfo.url);
-  pokemon.value = data;
-  imgUrl.value = data.sprites.other.home.front_default;
-  bgColor.value = data.types[0].type.name;
+  fetchData();
 });
 </script>
 
