@@ -50,12 +50,12 @@ import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
 const pokemonData = ref<IStringObj[]>([]);
-let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 const isLoading = ref(false);
 const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
 const isSearching = ref(false);
-
 const inputValue = ref("");
+
+let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 
 function LearnMore() {
   fetchData(nextUrl);

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentPokemon !== null" class="pokemon-card-wrapper">
+  <div v-if="currentPokemon" class="pokemon-card-wrapper">
     <div class="pokemon-card-box flex" :class="bgColor">
       <div class="box-top">
         <div class="back-icon">
@@ -679,4 +679,3 @@ onMounted(async () => {
   }
 } /*# sourceMappingURL=style.css.map */
 </style>
-../../type/IPokemon

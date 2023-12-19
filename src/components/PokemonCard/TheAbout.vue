@@ -41,4 +41,3 @@ defineProps({
   },
 });
 </script>
-../../type/IPokemon

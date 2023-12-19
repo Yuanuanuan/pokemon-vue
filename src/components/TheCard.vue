@@ -50,21 +50,21 @@ const props = defineProps({
 });
 
 const pokemon = ref<IPokemon | IPokemonInfo>();
-const imgUrl = ref("");
-const bgColor = ref("");
+let imgUrl: string;
+let bgColor: string;
 
 async function fetchData() {
   if (props.isSearch) {
     const { data } = await getPokemons.get<IPokemon>(`${props.pokemonName}`);
     pokemon.value = data;
-    imgUrl.value = data.sprites.other.home.front_default;
-    bgColor.value = data.types[0].type.name;
+    imgUrl = data.sprites.other.home.front_default;
+    bgColor = data.types[0].type.name;
     return data;
   } else if (!props.isSearch && props.pokemonInfo) {
     const { data } = await axios.get<IPokemonInfo>(props.pokemonInfo);
     pokemon.value = data;
-    imgUrl.value = data.sprites.front_default;
-    bgColor.value = data.types[0].type.name;
+    imgUrl = data.sprites.front_default;
+    bgColor = data.types[0].type.name;
     return data;
   }
 }
@@ -328,4 +328,3 @@ onMounted(async () => {
   background-color: #c9c9c9;
 } /*# sourceMappingURL=style.css.map */
 </style>
-../type/IPokemon.ts

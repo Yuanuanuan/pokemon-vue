@@ -56,7 +56,7 @@ watch(
 );
 </script>
 
-<style>
+<style scoped>
 .search-wrapper {
   width: 100%;
   height: 40px;
