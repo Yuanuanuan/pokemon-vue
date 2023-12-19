@@ -47,6 +47,5 @@ const lovePokemon = inject<string[]>("lovePokemon", []);
 function onSelectPokemon(event: Event) {
   const target = event.target as HTMLElement;
   currentPokemon.value = target.dataset.url ?? "";
-  console.log(currentPokemon.value);
 }
 </script>

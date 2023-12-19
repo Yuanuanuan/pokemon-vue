@@ -9,8 +9,12 @@
           <div class="name">
             {{ currentPokemon.name }}
           </div>
-          <div class="love-icon" @click="addFavorite?.(props.url)">
-            <LoveIcon :class="{ active: checkPokemon(props.url) }" />
+          <div
+            class="love-icon"
+            :class="{ active: checkPokemon(props.url) }"
+            @click="addFavorite?.(props.url)"
+          >
+            <LoveIcon />
           </div>
         </div>
         <div class="types-id">

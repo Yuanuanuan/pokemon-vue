@@ -20,7 +20,13 @@ function changeNav(val: string) {
 }
 
 function addFavorite(url: string) {
-  lovePokemon.value.push(url);
+  const checkValue = lovePokemon.value.find((item) => item === url);
+  if (checkValue) {
+    const pokemonIndex = lovePokemon.value.findIndex((item) => item === url);
+    lovePokemon.value.splice(pokemonIndex, 1);
+  } else {
+    lovePokemon.value.push(url);
+  }
 }
 
 provide("lovePokemon", lovePokemon.value);
