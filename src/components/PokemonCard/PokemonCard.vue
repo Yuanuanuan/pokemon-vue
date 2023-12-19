@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { getPokemons } from "../../api/getPokemons";
+import { pokemonInstance } from "../../api/pokemonInstance.ts";
 
 import { IPokemon } from "../../type/IPokemon";
 
@@ -105,7 +105,7 @@ async function fetchData() {
   if (props.url.length === 0) return;
 
   try {
-    const { data } = await getPokemons.get(props.url);
+    const { data } = await pokemonInstance.get(props.url);
     currentPokemon.value = data as IPokemon;
     bgColor.value = data.types[0].type.name;
   } catch (error) {

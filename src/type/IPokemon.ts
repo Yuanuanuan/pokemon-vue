@@ -1,3 +1,13 @@
+// Record
+
+// Record
+
+// Record
+
+// Record
+
+// Record
+
 export interface IStringObj {
   [key: string]: string;
 }
@@ -38,12 +48,12 @@ export interface IPokemon {
   types: IType[];
 }
 
-export interface IPokemonInfo {
-  id: number;
-  name: string;
-  sprites: {
-    front_default: string;
-  };
-  pokemon: IStringObj;
-  types: IType[];
-}
+// export interface IPokemonInfo {
+//   id: number;
+//   name: string;
+//   sprites: {
+//     front_default: string;
+//   };
+//   pokemon: IStringObj;
+//   types: IType[];
+// }

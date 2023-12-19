@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, watch } from "vue";
+import { defineProps, defineEmits, watch, PropType } from "vue";
 import SearchIcon from "../assets/icons/SearchIcon.vue";
 
 const props = defineProps({
@@ -31,7 +31,7 @@ const props = defineProps({
     type: String,
   },
   suggestion: {
-    type: Array,
+    type: Array as PropType<string[]>,
   },
 });
 
@@ -130,3 +130,6 @@ watch(
   }
 } /*# sourceMappingURL=style.css.map */
 </style>
+
+<!-- 去看emit怎麼定義的 -->
+<!-- debounce & throttle 研究一下 -->

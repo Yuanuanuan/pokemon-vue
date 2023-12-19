@@ -26,3 +26,10 @@ const app = createApp(App);
 app.use(router);
 
 app.mount("#app");
+
+// TheSearch
+// IPokemon.ts
+// PokemonCard.vue
+// HomePage.vue
+// App.vue
+// TheHeader.vue

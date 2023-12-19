@@ -27,6 +27,9 @@
   </div>
 </template>
 
+<!-- 用了router就去看到底怎麼用 不要再傳遞事件 用Path去做 -->
+<!-- 研究一下 如果用path的話 要怎麼讓HOME可以吃到 active class -->
+
 <script setup lang="ts">
 import { defineProps, defineEmits } from "vue";
 

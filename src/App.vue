@@ -1,6 +1,6 @@
 <template>
-  <TheHeader :currentNav="currentNav" @change-nav="changeNav" />
-  <router-view :currentNav="currentNav" @change-nav="changeNav"></router-view>
+  <TheHeader :currentNav="currentNav" />
+  <router-view :currentNav="currentNav"></router-view>
   <TheFooter />
 </template>
 
@@ -13,16 +13,9 @@ import { RouterView } from "vue-router";
 const currentNav = ref("Home");
 const lovePokemon = ref<string[]>([]);
 
-function changeNav(val: string) {
-  if (currentNav.value !== val) {
-    currentNav.value = val;
-  }
-}
-
 function addFavorite(url: string) {
-  const checkValue = lovePokemon.value.find((item) => item === url);
-  if (checkValue) {
-    const pokemonIndex = lovePokemon.value.findIndex((item) => item === url);
+  const pokemonIndex = lovePokemon.value.findIndex((item) => item === url);
+  if (pokemonIndex !== -1) {
     lovePokemon.value.splice(pokemonIndex, 1);
   } else {
     lovePokemon.value.push(url);

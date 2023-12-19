@@ -41,7 +41,7 @@
 import { onMounted, ref, computed } from "vue";
 
 import { IStringObj } from "../../type/IPokemon";
-import { getPokemons } from "../../api/getPokemons";
+import { pokemonInstance } from "../../api/pokemonInstance";
 import { pokemonName } from "../../../pokemonName.ts";
 
 import TheSearch from "../TheSearch.vue";
@@ -69,7 +69,7 @@ async function fetchData(url: string) {
   isLoading.value = true;
 
   try {
-    const { data } = await getPokemons.get(url);
+    const { data } = await pokemonInstance.get(url);
     nextUrl = data.next;
     pokemonData.value = pokemonData.value.concat(data.results);
   } catch (error) {
