@@ -23,3 +23,21 @@ defineProps({
   },
 });
 </script>
+
+<style scoped>
+.moves-wrapper .moves-box .moves-content {
+  display: flex;
+  flex-wrap: wrap;
+}
+.moves-wrapper .moves-box .moves-content h3 {
+  width: 50%;
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.title {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+</style>

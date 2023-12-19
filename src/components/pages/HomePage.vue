@@ -42,7 +42,7 @@ import { onMounted, ref, computed } from "vue";
 
 import { IStringObj } from "../../type/IPokemon";
 import { getPokemons } from "../../api/getPokemons";
-import { pokemonName } from "../../../public/pokemonName.ts";
+import { pokemonName } from "../../../pokemonName.ts";
 
 import TheSearch from "../TheSearch.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
@@ -337,4 +337,3 @@ onMounted(() => fetchData(nextUrl));
   }
 } /*# sourceMappingURL=homepage.css.map */
 </style>
-../../type/IPokemon.ts

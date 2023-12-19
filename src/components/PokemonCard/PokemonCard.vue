@@ -11,8 +11,8 @@
           </div>
           <div
             class="love-icon"
-            :class="{ active: checkPokemon(props.url) }"
-            @click="addFavorite?.(props.url)"
+            :class="{ active: checkPokemon }"
+            @click="addFavorite?.(url)"
           >
             <LoveIcon />
           </div>
@@ -72,7 +72,7 @@ import { getPokemons } from "../../api/getPokemons";
 
 import { IPokemon } from "../../type/IPokemon";
 
-import { onMounted, ref, watch, computed, inject } from "vue";
+import { ref, watch, computed, inject } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
 import TheAbout from "./TheAbout.vue";
@@ -101,53 +101,41 @@ function changeNav(event: MouseEvent) {
   }
 }
 
-function checkPokemon(url: string) {
-  return lovePokemon?.find((item) => item === url);
-}
-
 async function fetchData() {
+  if (props.url.length === 0) return;
+
   try {
-    if (props.url.length > 0) {
-      const { data } = await getPokemons.get(props.url);
-      currentPokemon.value = data as IPokemon;
-      bgColor.value = data.types[0].type.name;
-    }
+    const { data } = await getPokemons.get(props.url);
+    currentPokemon.value = data as IPokemon;
+    bgColor.value = data.types[0].type.name;
   } catch (error) {
     console.error(error);
   }
 }
 
-const formattedId = computed(() => {
-  if (currentPokemon.value) {
-    const stringId: string = currentPokemon.value.id.toString();
+const checkPokemon = computed(() => {
+  return lovePokemon?.find((item) => item === props.url);
+});
 
-    switch (stringId.length) {
-      case 1:
-        return `#000${stringId}`;
-      case 2:
-        return `#00${stringId}`;
-      case 3:
-        return `#0${stringId}`;
-      default:
-        return `#${stringId}`;
-    }
-  }
-  return "";
+const formattedId = computed(() => {
+  if (!currentPokemon.value) return "";
+
+  const stringId: string = currentPokemon.value.id.toString();
+  return "#" + stringId.padStart(4, "0");
 });
 
 watch(
   () => props.url,
   () => {
     fetchData();
+  },
+  {
+    immediate: true,
   }
 );
-
-onMounted(async () => {
-  fetchData();
-});
 </script>
 
-<style>
+<style scoped>
 .pokemon-card-wrapper {
   width: 40%;
   height: 75vh;
@@ -494,44 +482,6 @@ onMounted(async () => {
   .box-bottom
   .info-content::-webkit-scrollbar {
   display: none;
-}
-.pokemon-card-wrapper
-  .pokemon-card-box
-  .box-bottom
-  .info-content
-  .about-wrapper
-  .about-box {
-  overflow-y: scroll;
-}
-.pokemon-card-wrapper
-  .pokemon-card-box
-  .box-bottom
-  .info-content
-  .about-wrapper
-  .about-box::-webkit-scrollbar {
-  display: none;
-}
-.pokemon-card-wrapper
-  .pokemon-card-box
-  .box-bottom
-  .info-content
-  .moves-wrapper
-  .moves-box
-  .moves-content {
-  display: flex;
-  flex-wrap: wrap;
-}
-.pokemon-card-wrapper
-  .pokemon-card-box
-  .box-bottom
-  .info-content
-  .moves-wrapper
-  .moves-box
-  .moves-content
-  h3 {
-  width: 50%;
-  font-size: 1rem;
-  font-weight: 400;
 }
 
 .pokemon-card-box.grass {

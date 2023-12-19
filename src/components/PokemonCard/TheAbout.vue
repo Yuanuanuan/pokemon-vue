@@ -41,3 +41,35 @@ defineProps({
   },
 });
 </script>
+
+<style scoped>
+.about-wrapper .about-box {
+  overflow-y: scroll;
+}
+.about-wrapper .about-box::-webkit-scrollbar {
+  display: none;
+}
+.title {
+  margin: 0.5rem 0;
+  font-size: 1.25rem;
+  font-weight: 500;
+}
+
+.text {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #9a9a9a;
+  width: 180px;
+}
+
+.value {
+  font-size: 1rem;
+  font-weight: 400;
+}
+
+.flexStart {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+</style>
