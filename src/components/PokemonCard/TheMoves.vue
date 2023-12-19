@@ -14,7 +14,7 @@
 <script setup lang="ts">
 import { defineProps, PropType } from "vue";
 
-import { IPokemon } from "../../../type/IPokemon";
+import { IPokemon } from "../../type/IPokemon";
 
 defineProps({
   data: {
@@ -23,3 +23,4 @@ defineProps({
   },
 });
 </script>
+../../type/IPokemon

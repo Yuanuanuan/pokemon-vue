@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { onMounted, ref, computed } from "vue";
 
-import { IStringObj } from "../../../type/IPokemon";
+import { IStringObj } from "../../type/IPokemon";
 import { getPokemons } from "../../api/getPokemons";
 import { pokemonName } from "../../../public/pokemonName.ts";
 
@@ -337,3 +337,4 @@ onMounted(() => fetchData(nextUrl));
   }
 } /*# sourceMappingURL=homepage.css.map */
 </style>
+../../type/IPokemon.ts

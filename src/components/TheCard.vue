@@ -33,7 +33,7 @@
 import axios from "axios";
 import { ref, defineProps, onMounted, watch } from "vue";
 
-import { IPokemon, IPokemonInfo } from "../../type/IPokemon";
+import { IPokemon, IPokemonInfo } from "../type/IPokemon";
 import { getPokemons } from "../api/getPokemons.ts";
 
 const props = defineProps({
@@ -328,3 +328,4 @@ onMounted(async () => {
   background-color: #c9c9c9;
 } /*# sourceMappingURL=style.css.map */
 </style>
+../type/IPokemon.ts

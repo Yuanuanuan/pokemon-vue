@@ -70,7 +70,7 @@
 <script setup lang="ts">
 import { getPokemons } from "../../api/getPokemons";
 
-import { IPokemon } from "../../../type/IPokemon";
+import { IPokemon } from "../../type/IPokemon";
 
 import { onMounted, ref, watch, computed, inject } from "vue";
 import BackIcon from "../../assets/icons/BackIcon.vue";
@@ -679,3 +679,4 @@ onMounted(async () => {
   }
 } /*# sourceMappingURL=style.css.map */
 </style>
+../../type/IPokemon
