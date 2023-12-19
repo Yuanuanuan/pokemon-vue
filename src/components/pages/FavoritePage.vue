@@ -8,10 +8,11 @@
             :key="pokemon"
             :pokemonInfo="pokemon"
             :isSearch="false"
+            @click="onSelectPokemon($event)"
           />
         </div>
       </div>
-      <!-- <PokemonCard url="" /> -->
+      <PokemonCard :url="currentPokemon" />
     </div>
     <div v-else class="main-container-wrapper flex">
       <div class="no-favorite">
@@ -28,10 +29,10 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, inject } from "vue";
+import { ref, defineProps, defineEmits, inject } from "vue";
 
 import TheCard from "../TheCard.vue";
-// import PokemonCard from "../PokemonCard/PokemonCard.vue";
+import PokemonCard from "../PokemonCard/PokemonCard.vue";
 
 defineProps({
   currentNav: { type: String },
@@ -39,5 +40,13 @@ defineProps({
 
 const emits = defineEmits(["change-nav"]);
 
+const currentPokemon = ref<string>("");
+
 const lovePokemon = inject<string[]>("lovePokemon", []);
+
+function onSelectPokemon(event: Event) {
+  const target = event.target as HTMLElement;
+  currentPokemon.value = target.dataset.url ?? "";
+  console.log(currentPokemon.value);
+}
 </script>

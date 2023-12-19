@@ -1,5 +1,10 @@
 <template>
-  <div v-if="pokemon" :class="bgColor" class="card">
+  <div
+    v-if="pokemon"
+    :class="bgColor"
+    class="card"
+    :data-url="props.pokemonInfo"
+  >
     <div class="pokemon-info">
       <div class="pokemon-name">
         {{ pokemon.name.slice(0, 1).toUpperCase() + pokemon.name.slice(1) }}
@@ -51,14 +56,12 @@ const bgColor = ref("");
 async function fetchData() {
   if (props.isSearch) {
     const { data } = await getPokemons.get<IPokemon>(`${props.pokemonName}`);
-    console.log(data);
     pokemon.value = data;
     imgUrl.value = data.sprites.other.home.front_default;
     bgColor.value = data.types[0].type.name;
     return data;
   } else if (!props.isSearch && props.pokemonInfo) {
     const { data } = await axios.get<IPokemonInfo>(props.pokemonInfo);
-    console.log(data);
     pokemon.value = data;
     imgUrl.value = data.sprites.front_default;
     bgColor.value = data.types[0].type.name;

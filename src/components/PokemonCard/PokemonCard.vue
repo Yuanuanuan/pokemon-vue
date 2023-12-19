@@ -1,5 +1,5 @@
 <template>
-  <div v-if="currentPokemon" class="pokemon-card-wrapper">
+  <div v-if="currentPokemon !== null" class="pokemon-card-wrapper">
     <div class="pokemon-card-box flex" :class="bgColor">
       <div class="box-top">
         <div class="back-icon">
@@ -9,11 +9,8 @@
           <div class="name">
             {{ currentPokemon.name }}
           </div>
-          <div
-            class="love-icon"
-            @click="addFavorite?.(currentPokemon.forms[0].url)"
-          >
-            <LoveIcon />
+          <div class="love-icon" @click="addFavorite?.(props.url)">
+            <LoveIcon :class="{ active: checkPokemon(props.url) }" />
           </div>
         </div>
         <div class="types-id">
@@ -84,11 +81,13 @@ const currentNav = ref("About");
 const props = defineProps({
   url: {
     type: String,
-    required: true,
+    default: "",
   },
 });
 
 const addFavorite = inject<(url: string) => void>("addFavorite");
+
+const lovePokemon = inject<string[]>("lovePokemon");
 
 function changeNav(event: MouseEvent) {
   const target = event.target as HTMLElement;
@@ -98,11 +97,17 @@ function changeNav(event: MouseEvent) {
   }
 }
 
+function checkPokemon(url: string) {
+  return lovePokemon?.find((item) => item === url);
+}
+
 async function fetchData() {
   try {
-    const { data } = await getPokemons.get(props.url);
-    currentPokemon.value = data as IPokemon;
-    bgColor.value = data.types[0].type.name;
+    if (props.url.length > 0) {
+      const { data } = await getPokemons.get(props.url);
+      currentPokemon.value = data as IPokemon;
+      bgColor.value = data.types[0].type.name;
+    }
   } catch (error) {
     console.error(error);
   }

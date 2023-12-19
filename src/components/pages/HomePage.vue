@@ -11,17 +11,17 @@
           <TheCard
             v-if="!isSearching"
             v-for="pokemon in pokemonData"
-            :key="pokemon.name"
             :isSearch="isSearching"
             :pokemonInfo="pokemon.url"
+            :key="pokemon.name"
             @click="onSelectedPokemon(pokemon.url)"
           />
           <TheCard
             v-else
             v-for="pokemon in suggestion"
-            :key="pokemon"
             :isSearch="isSearching"
             :pokemonName="pokemon"
+            :key="pokemon"
             @click="onSelectedPokemon(pokemon)"
           />
         </div>
