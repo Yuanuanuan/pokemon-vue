@@ -40,7 +40,7 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from "vue";
 
-import { IStringObj, IPokemonInitialData } from "../../type/IPokemon";
+import { StringObj, IPokemonInitialData } from "../../type/IPokemon";
 import { pokemonInstance } from "../../api/pokemonInstance";
 import { pokemonName } from "../../../pokemonName.ts";
 
@@ -49,7 +49,7 @@ import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
-const pokemonData = reactive<IStringObj[]>([]);
+const pokemonData = reactive<StringObj[]>([]);
 const isLoading = ref(false);
 const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
 const isSearching = ref(false);
@@ -235,6 +235,9 @@ onMounted(() => fetchData(nextUrl));
   font-weight: 500;
   color: #ffce02;
 }
+.main-container .main-container-wrapper .no-favorite .link {
+  text-decoration: none;
+}
 .main-container .main-container-wrapper .no-favorite .find-btn {
   display: block;
   border: none;
@@ -246,6 +249,7 @@ onMounted(() => fetchData(nextUrl));
   border: 2px solid #2b56b1;
   cursor: pointer;
   position: relative;
+  z-index: 1;
   overflow: hidden;
   transition: transform 0.5s ease;
 }
@@ -260,22 +264,15 @@ onMounted(() => fetchData(nextUrl));
   transform: translate(-50%, 50%) scale(0, 0);
   background-color: #2b56b1;
   transition: transform 0.6s ease;
+  z-index: -1;
 }
 .main-container .main-container-wrapper .no-favorite .find-btn:hover {
-  transform: translate(10px, 10px);
-}
-.main-container .main-container-wrapper .no-favorite .find-btn:hover .link {
   color: #f5f6f7;
+  transform: translate(10px, 10px);
+  transition: all 0.5s ease;
 }
 .main-container .main-container-wrapper .no-favorite .find-btn:hover::after {
   transform: translate(-50%, 50%) scale(1, 1);
-}
-.main-container .main-container-wrapper .no-favorite .find-btn .link {
-  text-decoration: none;
-  color: #222;
-  position: relative;
-  z-index: 3;
-  transition: color 0.5s ease;
 }
 
 @keyframes lds-facebook {

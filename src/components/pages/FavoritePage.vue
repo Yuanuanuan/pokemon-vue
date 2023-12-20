@@ -18,11 +18,9 @@
       <div class="no-favorite">
         <h1>You haven't added any likes yet.</h1>
         <h2>Go to find your favorite Pokemon!</h2>
-        <button class="find-btn">
-          <router-link to="/" class="link" @click="$emit('change-nav', 'Home')"
-            >Find</router-link
-          >
-        </button>
+        <RouterLink to="/" class="link">
+          <button class="find-btn">Find</button>
+        </RouterLink>
       </div>
     </div>
   </div>
@@ -33,12 +31,11 @@ import { ref, inject } from "vue";
 
 import TheCard from "../TheCard.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
+import { RouterLink } from "vue-router";
 
 defineProps({
   currentNav: { type: String },
 });
-
-const emits = defineEmits(["change-nav"]);
 
 const currentPokemon = ref<string>("");
 

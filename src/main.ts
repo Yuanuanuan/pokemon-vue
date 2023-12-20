@@ -29,4 +29,3 @@ app.mount("#app");
 
 // TheSearch.vue
 // PokemonCard.vue
-// FavoritePage.vue emit
