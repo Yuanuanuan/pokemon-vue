@@ -25,7 +25,11 @@
         </div>
         <div class="learn-more flex">
           <TheLoading v-if="isLoading" />
-          <button v-else class="learn-more-btn" @click="LearnMore">
+          <button
+            v-else-if="!isSearching"
+            class="learn-more-btn"
+            @click="LearnMore"
+          >
             Learn More
           </button>
         </div>
