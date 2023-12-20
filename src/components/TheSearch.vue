@@ -6,7 +6,9 @@
       </div>
       <input
         :value="modelValue"
-        @input="handleInput($event)"
+        @input="
+          $emit('update:modelValue', ($event.target as HTMLInputElement).value)
+        "
         list="suggestions"
         type="search"
         class="search-input"
@@ -23,10 +25,10 @@
 </template>
 
 <script setup lang="ts">
-import { watch, PropType } from "vue";
+import { PropType } from "vue";
 import SearchIcon from "../assets/icons/SearchIcon.vue";
 
-const props = defineProps({
+defineProps({
   modelValue: {
     type: String,
   },
@@ -35,25 +37,9 @@ const props = defineProps({
   },
 });
 
-const emits = defineEmits(["update:modelValue", "setSearching"]);
-
-const handleInput = (event: Event) => {
-  const target = event.target as HTMLInputElement;
-  if (target) {
-    emits("update:modelValue", target.value);
-  }
-};
-
-watch(
-  () => props.modelValue,
-  (newVal) => {
-    if (newVal === "") {
-      emits("setSearching", false);
-    } else {
-      emits("setSearching", true);
-    }
-  }
-);
+const emit = defineEmits<{
+  (e: "update:modelValue", val: string): void;
+}>();
 </script>
 
 <style scoped>
@@ -130,6 +116,3 @@ watch(
   }
 } /*# sourceMappingURL=style.css.map */
 </style>
-
-<!-- 去看emit怎麼定義的 -->
-<!-- debounce & throttle 研究一下 -->

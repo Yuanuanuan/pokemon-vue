@@ -62,10 +62,24 @@ async function fetchData() {
   bgColor = data.types[0].type.name;
 }
 
+function debounce(callback: Function, delay = 500) {
+  let time: ReturnType<typeof setTimeout>;
+  return () => {
+    clearTimeout(time);
+    time = setTimeout(() => {
+      callback();
+    }, delay);
+  };
+}
+
+const debounceSuggestion = debounce(() => {
+  fetchData();
+}, 800);
+
 watch(
   () => props.pokemonName,
   () => {
-    fetchData();
+    debounceSuggestion();
   },
   {
     immediate: true,

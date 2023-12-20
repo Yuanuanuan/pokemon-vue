@@ -2,11 +2,7 @@
   <div class="main-container">
     <div class="main-container-wrapper flex">
       <div class="cards-container">
-        <TheSearch
-          v-model="inputValue"
-          :suggestion="suggestion"
-          @setSearching="setSearching"
-        />
+        <TheSearch v-model="inputValue" :suggestion="suggestion" />
         <div class="cards flex">
           <TheCard
             v-if="!isSearching"
@@ -52,7 +48,6 @@ import TheLoading from "../TheLoading.vue";
 const pokemonData = reactive<StringObj[]>([]);
 const isLoading = ref(false);
 const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
-const isSearching = ref(false);
 const inputValue = ref("");
 
 let nextUrl = "https://pokeapi.co/api/v2/pokemon";
@@ -78,9 +73,9 @@ async function fetchData(url: string) {
   }
 }
 
-function setSearching(val: boolean) {
-  isSearching.value = val;
-}
+const isSearching = computed(() => {
+  return inputValue.value === "" ? false : true;
+});
 
 const suggestion = computed<string[]>(() => {
   return pokemonName.filter((name) =>
