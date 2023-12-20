@@ -25,9 +25,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, watch } from "vue";
+import { ref, watch } from "vue";
 
-import { IPokemon } from "../type/IPokemon";
+import { IPokemonWithId } from "../type/IPokemon";
 import { pokemonInstance } from "../api/pokemonInstance.ts";
 
 const props = defineProps({
@@ -43,7 +43,7 @@ const props = defineProps({
   },
 });
 
-const pokemon = ref<IPokemon>();
+const pokemon = ref<IPokemonWithId>();
 let imgUrl: string;
 let bgColor: string;
 
@@ -55,7 +55,7 @@ async function fetchData() {
     currentUrl = props.pokemonInfo ?? "";
   }
 
-  const { data } = await pokemonInstance.get<IPokemon>(currentUrl);
+  const { data } = await pokemonInstance.get<IPokemonWithId>(currentUrl);
 
   pokemon.value = data;
   imgUrl = data.sprites.other.home.front_default;

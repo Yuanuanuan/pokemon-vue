@@ -4,7 +4,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 .footer-wrapper {
   width: 100%;
   height: 40px;

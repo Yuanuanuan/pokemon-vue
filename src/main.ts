@@ -27,7 +27,6 @@ app.use(router);
 
 app.mount("#app");
 
-// TheSearch
-// IPokemon.ts
+// TheSearch.vue
 // PokemonCard.vue
-// HomePage.vue
+// FavoritePage.vue emit

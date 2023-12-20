@@ -45,14 +45,14 @@
             <div
               class="about"
               :class="{ active: currentNav === 'About' }"
-              @click="changeNav($event)"
+              @click="changeNav"
             >
               About
             </div>
             <div
               class="moves"
               :class="{ active: currentNav === 'Moves' }"
-              @click="changeNav($event)"
+              @click="changeNav"
             >
               Moves
             </div>
@@ -68,17 +68,17 @@
 </template>
 
 <script setup lang="ts">
-import { pokemonInstance } from "../../api/pokemonInstance.ts";
-
-import { IPokemon } from "../../type/IPokemon";
-
 import { ref, watch, computed, inject } from "vue";
+
+import { pokemonInstance } from "../../api/pokemonInstance.ts";
+import { IPokemonWithId } from "../../type/IPokemon";
+
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
 import TheAbout from "./TheAbout.vue";
 import TheMoves from "./TheMoves.vue";
 
-const currentPokemon = ref<IPokemon | null>(null);
+const currentPokemon = ref<IPokemonWithId>();
 const bgColor = ref<string>("");
 const currentNav = ref("About");
 
@@ -93,7 +93,7 @@ const addFavorite = inject<(url: string) => void>("addFavorite");
 
 const lovePokemon = inject<string[]>("lovePokemon");
 
-function changeNav(event: MouseEvent) {
+function changeNav(event: Event) {
   const target = event.target as HTMLElement;
 
   if (target) {
@@ -105,8 +105,8 @@ async function fetchData() {
   if (props.url.length === 0) return;
 
   try {
-    const { data } = await pokemonInstance.get(props.url);
-    currentPokemon.value = data as IPokemon;
+    const { data } = await pokemonInstance.get<IPokemonWithId>(props.url);
+    currentPokemon.value = data as IPokemonWithId;
     bgColor.value = data.types[0].type.name;
   } catch (error) {
     console.error(error);

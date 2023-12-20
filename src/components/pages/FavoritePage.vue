@@ -8,7 +8,7 @@
             :key="pokemon"
             :pokemonInfo="pokemon"
             :isSearch="false"
-            @click="onSelectPokemon($event)"
+            @click="onSelectPokemon"
           />
         </div>
       </div>
@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineProps, defineEmits, inject } from "vue";
+import { ref, inject } from "vue";
 
 import TheCard from "../TheCard.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";

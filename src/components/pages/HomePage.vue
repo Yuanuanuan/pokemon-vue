@@ -38,9 +38,9 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 
-import { IStringObj } from "../../type/IPokemon";
+import { IStringObj, IPokemonInitialData } from "../../type/IPokemon";
 import { pokemonInstance } from "../../api/pokemonInstance";
 import { pokemonName } from "../../../pokemonName.ts";
 
@@ -49,7 +49,7 @@ import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
 
-const pokemonData = ref<IStringObj[]>([]);
+const pokemonData = reactive<IStringObj[]>([]);
 const isLoading = ref(false);
 const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
 const isSearching = ref(false);
@@ -67,11 +67,10 @@ function onSelectedPokemon(url: string) {
 
 async function fetchData(url: string) {
   isLoading.value = true;
-
   try {
-    const { data } = await pokemonInstance.get(url);
+    const { data } = await pokemonInstance.get<IPokemonInitialData>(url);
+    pokemonData.push(...data.results);
     nextUrl = data.next;
-    pokemonData.value = pokemonData.value.concat(data.results);
   } catch (error) {
     console.error("Error fetching data:", error);
   } finally {
@@ -84,11 +83,8 @@ function setSearching(val: boolean) {
 }
 
 const suggestion = computed<string[]>(() => {
-  const inputLength = inputValue.value.length;
-  return pokemonName.filter(
-    (name) =>
-      inputValue.value.toLowerCase() ===
-      name.toLowerCase().substring(0, inputLength)
+  return pokemonName.filter((name) =>
+    name.toLowerCase().startsWith(inputValue.value.toLowerCase())
   );
 });
 

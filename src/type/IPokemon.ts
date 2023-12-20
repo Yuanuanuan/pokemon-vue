@@ -1,28 +1,6 @@
-// Record
-
-// Record
-
-// Record
-
-// Record
-
-// Record
-
-export interface IStringObj {
-  [key: string]: string;
-}
-
-interface IMove {
-  move: IStringObj;
-}
-
-interface IOther {
-  [key: string]: IHome;
-}
-
-interface IHome {
-  [key: string]: string;
-}
+export type IStringObj = Record<string, string>;
+type IOther = Record<string, IStringObj>;
+type IMove = IOther;
 
 interface IType {
   slot: number;
@@ -34,7 +12,13 @@ interface IStat {
   stat: IStringObj;
 }
 
-export interface IPokemon {
+export interface IPokemonInitialData {
+  count: number;
+  next: string;
+  results: IStringObj[];
+}
+
+export interface IPokemonWithId {
   height: number;
   weight: number;
   forms: IStringObj[];
@@ -47,13 +31,3 @@ export interface IPokemon {
   };
   types: IType[];
 }
-
-// export interface IPokemonInfo {
-//   id: number;
-//   name: string;
-//   sprites: {
-//     front_default: string;
-//   };
-//   pokemon: IStringObj;
-//   types: IType[];
-// }

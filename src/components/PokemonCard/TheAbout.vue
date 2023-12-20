@@ -30,13 +30,13 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, PropType } from "vue";
+import { PropType } from "vue";
 
-import { IPokemon } from "../../type/IPokemon";
+import { IPokemonWithId } from "../../type/IPokemon";
 
 defineProps({
   data: {
-    type: Object as PropType<IPokemon>,
+    type: Object as PropType<IPokemonWithId>,
     required: true,
   },
 });

@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, watch, PropType } from "vue";
+import { watch, PropType } from "vue";
 import SearchIcon from "../assets/icons/SearchIcon.vue";
 
 const props = defineProps({
