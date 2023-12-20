@@ -28,4 +28,3 @@ app.use(router);
 app.mount("#app");
 
 // TheSearch.vue
-// PokemonCard.vue

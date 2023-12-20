@@ -44,22 +44,22 @@
           <div class="nav-box">
             <div
               class="about"
-              :class="{ active: currentNav === 'About' }"
-              @click="changeNav"
+              :class="{ active: currentNav === 'about' }"
+              @click="changeNav('about')"
             >
               About
             </div>
             <div
               class="moves"
-              :class="{ active: currentNav === 'Moves' }"
-              @click="changeNav"
+              :class="{ active: currentNav === 'moves' }"
+              @click="changeNav('moves')"
             >
               Moves
             </div>
           </div>
         </div>
         <div class="info-content">
-          <TheAbout v-if="currentNav === 'About'" :data="currentPokemon" />
+          <TheAbout v-if="currentNav === 'about'" :data="currentPokemon" />
           <TheMoves v-else :data="currentPokemon" />
         </div>
       </div>
@@ -80,7 +80,7 @@ import TheMoves from "./TheMoves.vue";
 
 const currentPokemon = ref<IPokemonWithId>();
 const bgColor = ref<string>("");
-const currentNav = ref("About");
+const currentNav = ref("about");
 
 const props = defineProps({
   url: {
@@ -93,12 +93,8 @@ const addFavorite = inject<(url: string) => void>("addFavorite");
 
 const lovePokemon = inject<string[]>("lovePokemon");
 
-function changeNav(event: Event) {
-  const target = event.target as HTMLElement;
-
-  if (target) {
-    currentNav.value = target.innerText;
-  }
+function changeNav(val: string) {
+  currentNav.value = val;
 }
 
 async function fetchData() {
@@ -106,7 +102,7 @@ async function fetchData() {
 
   try {
     const { data } = await pokemonInstance.get<IPokemonWithId>(props.url);
-    currentPokemon.value = data as IPokemonWithId;
+    currentPokemon.value = data;
     bgColor.value = data.types[0].type.name;
   } catch (error) {
     console.error(error);
