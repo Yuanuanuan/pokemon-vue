@@ -1,16 +1,17 @@
 <template>
-  <TheHeader :currentNav="currentNav" />
-  <router-view :currentNav="currentNav"></router-view>
+  <TheHeader />
+  <RouterView />
   <TheFooter />
 </template>
 
 <script setup lang="ts">
-import { ref, provide } from "vue";
-import TheHeader from "./components/layouts/TheHeader.vue";
-import TheFooter from "./components/layouts/TheFooter.vue";
 import { RouterView } from "vue-router";
 
-const currentNav = ref("Home");
+import { ref, provide } from "vue";
+
+import TheHeader from "./components/layouts/TheHeader.vue";
+import TheFooter from "./components/layouts/TheFooter.vue";
+
 const lovePokemon = ref<string[]>([]);
 
 function addFavorite(url: string) {

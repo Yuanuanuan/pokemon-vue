@@ -135,7 +135,7 @@ watch(
 );
 </script>
 
-<style scoped>
+<style>
 .pokemon-card-wrapper {
   width: 40%;
   height: 75vh;

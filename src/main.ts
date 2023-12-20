@@ -31,5 +31,3 @@ app.mount("#app");
 // IPokemon.ts
 // PokemonCard.vue
 // HomePage.vue
-// App.vue
-// TheHeader.vue
