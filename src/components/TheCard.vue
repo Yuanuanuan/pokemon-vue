@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from "vue";
+import { ref, watch, computed } from "vue";
 
 import { IPokemonWithId } from "../type/IPokemon";
 import { pokemonInstance } from "../api/pokemonInstance.ts";
@@ -41,10 +41,13 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
+  isShiny: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const pokemon = ref<IPokemonWithId>();
-let imgUrl: string;
 let bgColor: string;
 
 async function fetchData() {
@@ -58,7 +61,6 @@ async function fetchData() {
   const { data } = await pokemonInstance.get<IPokemonWithId>(currentUrl);
 
   pokemon.value = data;
-  imgUrl = data.sprites.other.home.front_default;
   bgColor = data.types[0].type.name;
 }
 
@@ -75,6 +77,13 @@ function debounce(callback: Function, delay = 500) {
 const debounceSuggestion = debounce(() => {
   fetchData();
 }, 800);
+
+const imgUrl = computed(() => {
+  if (!pokemon.value) return;
+  return props.isShiny
+    ? pokemon.value.sprites.other.home.front_shiny
+    : pokemon.value.sprites.other.home.front_default;
+});
 
 watch(
   () => props.pokemonName,

@@ -1,6 +1,6 @@
 <template>
-  <TheHeader />
-  <RouterView />
+  <TheHeader @shiny="toggleShiny" :isShiny="isShiny" />
+  <RouterView :isShiny="isShiny" />
   <TheFooter />
 </template>
 
@@ -13,6 +13,7 @@ import TheHeader from "./components/layouts/TheHeader.vue";
 import TheFooter from "./components/layouts/TheFooter.vue";
 
 const lovePokemon = ref<string[]>([]);
+const isShiny = ref(false);
 
 function addFavorite(url: string) {
   const pokemonIndex = lovePokemon.value.findIndex((item) => item === url);
@@ -21,6 +22,10 @@ function addFavorite(url: string) {
   } else {
     lovePokemon.value.push(url);
   }
+}
+
+function toggleShiny() {
+  isShiny.value = !isShiny.value;
 }
 
 provide("lovePokemon", lovePokemon.value);

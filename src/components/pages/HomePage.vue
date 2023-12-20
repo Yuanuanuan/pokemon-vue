@@ -8,6 +8,7 @@
             v-if="!isSearching"
             v-for="pokemon in pokemonData"
             :isSearch="isSearching"
+            :isShiny="isShiny"
             :pokemonInfo="pokemon.url"
             :key="pokemon.name"
             @click="onSelectedPokemon(pokemon.url)"
@@ -16,6 +17,7 @@
             v-else
             v-for="pokemon in suggestion"
             :isSearch="isSearching"
+            :isShiny="isShiny"
             :pokemonName="pokemon"
             :key="pokemon"
             @click="onSelectedPokemon(pokemon)"
@@ -28,7 +30,7 @@
           </button>
         </div>
       </div>
-      <PokemonCard :url="pokemonId" />
+      <PokemonCard :url="pokemonId" :isShiny="isShiny" />
     </div>
   </div>
 </template>
@@ -44,6 +46,12 @@ import TheSearch from "../TheSearch.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
+
+defineProps({
+  isShiny: {
+    type: Boolean,
+  },
+});
 
 const pokemonData = reactive<StringObj[]>([]);
 const isLoading = ref(false);

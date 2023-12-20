@@ -32,7 +32,7 @@
           </div>
         </div>
         <div class="pokemon-image">
-          <img :src="currentPokemon.sprites.other.home.front_default" />
+          <img :src="imgUrl" />
         </div>
         <div class="pokemon-ball">
           <div class="ball-inside" :class="bgColor"></div>
@@ -87,10 +87,13 @@ const props = defineProps({
     type: String,
     default: "",
   },
+  isShiny: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 const addFavorite = inject<(url: string) => void>("addFavorite");
-
 const lovePokemon = inject<string[]>("lovePokemon");
 
 function changeNav(val: string) {
@@ -108,6 +111,13 @@ async function fetchData() {
     console.error(error);
   }
 }
+
+const imgUrl = computed(() => {
+  if (!currentPokemon.value) return;
+  return props.isShiny
+    ? currentPokemon.value.sprites.other.home.front_shiny
+    : currentPokemon.value.sprites.other.home.front_default;
+});
 
 const checkPokemon = computed(() => {
   return lovePokemon?.find((item) => item === props.url);

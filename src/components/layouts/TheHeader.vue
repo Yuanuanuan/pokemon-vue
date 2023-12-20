@@ -1,4 +1,3 @@
-import { RouterLink } from 'vue-router';
 <template>
   <div class="header-wrapper">
     <div class="logo-icon">
@@ -13,7 +12,21 @@ import { RouterLink } from 'vue-router';
           Favorite
         </div>
       </RouterLink>
-      <div class="toggle-btn">SHINY</div>
+      <div class="toggle-btn" @click="$emit('shiny')">
+        {{ isShiny ? "ORIGINAL" : "SHINY" }}
+      </div>
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+defineProps({
+  isShiny: {
+    type: Boolean,
+    required: true,
+  },
+});
+const emit = defineEmits<{
+  (e: "shiny"): void;
+}>();
+</script>
