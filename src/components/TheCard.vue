@@ -59,24 +59,11 @@ async function fetchData() {
   }
 
   const { data } = await pokemonInstance.get<IPokemonWithId>(currentUrl);
+  console.log("fetch");
 
   pokemon.value = data;
   bgColor = data.types[0].type.name;
 }
-
-function debounce(callback: Function, delay = 500) {
-  let time: ReturnType<typeof setTimeout>;
-  return () => {
-    clearTimeout(time);
-    time = setTimeout(() => {
-      callback();
-    }, delay);
-  };
-}
-
-const debounceSuggestion = debounce(() => {
-  fetchData();
-}, 800);
 
 const imgUrl = computed(() => {
   if (!pokemon.value) return;
@@ -88,7 +75,7 @@ const imgUrl = computed(() => {
 watch(
   () => props.pokemonName,
   () => {
-    debounceSuggestion();
+    fetchData();
   },
   {
     immediate: true,

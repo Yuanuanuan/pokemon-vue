@@ -15,7 +15,7 @@
           />
           <TheCard
             v-else
-            v-for="pokemon in suggestion"
+            v-for="pokemon in suggestion.slice(0, 20)"
             :isSearch="isSearching"
             :isShiny="isShiny"
             :pokemonName="pokemon"
@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted, watch } from "vue";
 
 import { StringObj, IPokemonInitialData } from "../../type/IPokemon";
 import { pokemonInstance } from "../../api/pokemonInstance";
@@ -61,6 +61,7 @@ const pokemonData = reactive<StringObj[]>([]);
 const isLoading = ref(false);
 const pokemonId = ref("https://pokeapi.co/api/v2/pokemon/1");
 const inputValue = ref("");
+const suggestion = ref<string[]>([]);
 
 let nextUrl = "https://pokeapi.co/api/v2/pokemon";
 
@@ -89,11 +90,28 @@ const isSearching = computed(() => {
   return inputValue.value === "" ? false : true;
 });
 
-const suggestion = computed<string[]>(() => {
-  return pokemonName.filter((name) =>
+function debounce(callback: Function, delay = 500) {
+  let time: ReturnType<typeof setTimeout>;
+  return () => {
+    clearTimeout(time);
+    time = setTimeout(() => {
+      callback();
+    }, delay);
+  };
+}
+
+const debounceSuggestion = debounce(() => {
+  suggestion.value = pokemonName.filter((name) =>
     name.toLowerCase().startsWith(inputValue.value.toLowerCase())
   );
-});
+}, 900);
+
+watch(
+  () => inputValue.value,
+  () => {
+    debounceSuggestion();
+  }
+);
 
 onMounted(() => fetchData(nextUrl));
 </script>
