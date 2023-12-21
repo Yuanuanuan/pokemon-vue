@@ -59,7 +59,6 @@ async function fetchData() {
   }
 
   const { data } = await pokemonInstance.get<IPokemonWithId>(currentUrl);
-  console.log("fetch");
 
   pokemon.value = data;
   bgColor = data.types[0].type.name;

@@ -4,8 +4,14 @@
       <div class="cards-container">
         <TheSearch v-model="inputValue" :suggestion="suggestion" />
         <div class="cards flex">
+          <div
+            class="not-found-wrapper"
+            v-if="isSearching && suggestion.length <= 0"
+          >
+            <h1>No matching Pokémon found</h1>
+          </div>
           <TheCard
-            v-if="!isSearching"
+            v-else-if="!isSearching"
             v-for="pokemon in pokemonData"
             :isSearch="isSearching"
             :isShiny="isShiny"
