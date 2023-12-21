@@ -15,3 +15,9 @@
     </g>
   </svg>
 </template>
+
+<style scoped>
+svg.active path {
+  fill: #f5f6f7;
+}
+</style>

@@ -9,12 +9,8 @@
           <div class="name">
             {{ currentPokemon.name }}
           </div>
-          <div
-            class="love-icon"
-            :class="{ active: checkPokemon }"
-            @click="addFavorite?.(url)"
-          >
-            <LoveIcon />
+          <div class="love-icon" @click="addFavorite?.(url)">
+            <LoveIcon :class="{ active: checkPokemon }" />
           </div>
         </div>
         <div class="types-id">
@@ -138,7 +134,7 @@ watch(
 );
 </script>
 
-<style>
+<style scoped>
 .pokemon-card-wrapper {
   width: 40%;
   height: 75vh;
@@ -186,15 +182,6 @@ watch(
 }
 .pokemon-card-wrapper .pokemon-card-box .box-top .header .love-icon * {
   pointer-events: none;
-}
-.pokemon-card-wrapper
-  .pokemon-card-box
-  .box-top
-  .header
-  .love-icon.active
-  svg
-  path {
-  fill: #f5f6f7;
 }
 .pokemon-card-wrapper .pokemon-card-box .box-top .types-id {
   color: #f5f6f7;
