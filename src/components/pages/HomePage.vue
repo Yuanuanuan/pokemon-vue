@@ -92,7 +92,6 @@ watch(
     let time: number;
 
     time = setTimeout(() => {
-      console.log("hello");
       suggestion.value = pokemonName.filter((name) =>
         name.toLowerCase().startsWith(inputValue.value.toLowerCase())
       );
