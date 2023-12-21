@@ -1,6 +1,6 @@
 <template>
   <TheHeader @shiny="toggleShiny" :isShiny="isShiny" />
-  <RouterView :isShiny="isShiny" />
+  <RouterView />
   <TheFooter />
 </template>
 
@@ -29,5 +29,6 @@ function toggleShiny() {
 }
 
 provide("lovePokemon", lovePokemon.value);
+provide("isShiny", isShiny);
 provide("addFavorite", addFavorite);
 </script>

@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed } from "vue";
+import { ref, watch, computed, inject, Ref } from "vue";
 
 import { IPokemonWithId } from "../type/IPokemon";
 import { pokemonInstance } from "../api/pokemonInstance.ts";
@@ -41,14 +41,12 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  isShiny: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 const pokemon = ref<IPokemonWithId>();
 let bgColor: string;
+
+const isShiny = inject<Ref<boolean>>("isShiny");
 
 async function fetchData() {
   let currentUrl = "";
@@ -66,7 +64,7 @@ async function fetchData() {
 
 const imgUrl = computed(() => {
   if (!pokemon.value) return;
-  return props.isShiny
+  return isShiny?.value
     ? pokemon.value.sprites.other.home.front_shiny
     : pokemon.value.sprites.other.home.front_default;
 });

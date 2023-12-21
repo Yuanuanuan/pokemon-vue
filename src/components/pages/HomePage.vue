@@ -14,7 +14,6 @@
             v-else-if="!isSearching"
             v-for="pokemon in pokemonData"
             :isSearch="isSearching"
-            :isShiny="isShiny"
             :pokemonInfo="pokemon.url"
             :key="pokemon.name"
             @click="onSelectedPokemon(pokemon.url)"
@@ -23,7 +22,6 @@
             v-else
             v-for="pokemon in suggestion.slice(0, 20)"
             :isSearch="isSearching"
-            :isShiny="isShiny"
             :pokemonName="pokemon"
             :key="pokemon"
             @click="onSelectedPokemon(pokemon)"
@@ -40,7 +38,7 @@
           </button>
         </div>
       </div>
-      <PokemonCard :url="pokemonId" :isShiny="isShiny" />
+      <PokemonCard :url="pokemonId" />
     </div>
   </div>
 </template>
@@ -56,12 +54,6 @@ import TheSearch from "../TheSearch.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import TheCard from "../TheCard.vue";
 import TheLoading from "../TheLoading.vue";
-
-defineProps({
-  isShiny: {
-    type: Boolean,
-  },
-});
 
 const pokemonData = reactive<StringObj[]>([]);
 const isLoading = ref(false);
@@ -92,30 +84,23 @@ async function fetchData(url: string) {
   }
 }
 
-const isSearching = computed(() => {
-  return inputValue.value === "" ? false : true;
-});
-
-function debounce(callback: Function, delay = 500) {
-  let time: ReturnType<typeof setTimeout>;
-  return () => {
-    clearTimeout(time);
-    time = setTimeout(() => {
-      callback();
-    }, delay);
-  };
-}
-
-const debounceSuggestion = debounce(() => {
-  suggestion.value = pokemonName.filter((name) =>
-    name.toLowerCase().startsWith(inputValue.value.toLowerCase())
-  );
-}, 900);
+const isSearching = computed(() => !!inputValue.value);
 
 watch(
   () => inputValue.value,
-  () => {
-    debounceSuggestion();
+  (_, __, onCleanup) => {
+    let time: number;
+
+    time = setTimeout(() => {
+      console.log("hello");
+      suggestion.value = pokemonName.filter((name) =>
+        name.toLowerCase().startsWith(inputValue.value.toLowerCase())
+      );
+    }, 500);
+
+    onCleanup(() => {
+      clearTimeout(time);
+    });
   }
 );
 

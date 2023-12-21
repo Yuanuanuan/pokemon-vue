@@ -1,6 +1,6 @@
 export type StringObj = Record<string, string>;
 type Other = Record<string, StringObj>;
-type Move = Other;
+type Move = Record<string, StringObj>;
 
 interface IType {
   slot: number;
@@ -11,6 +11,8 @@ interface IStat {
   base_stat: number;
   stat: StringObj;
 }
+
+export type NavList = "about" | "moves";
 
 export interface IPokemonInitialData {
   count: number;

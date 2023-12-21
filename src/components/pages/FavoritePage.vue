@@ -7,13 +7,12 @@
             v-for="pokemon in lovePokemon"
             :key="pokemon"
             :pokemonInfo="pokemon"
-            :isShiny="isShiny"
             :isSearch="false"
             @click="onSelectPokemon"
           />
         </div>
       </div>
-      <PokemonCard :url="currentPokemon" :isShiny="isShiny" />
+      <PokemonCard :url="currentPokemon" />
     </div>
     <div v-else class="main-container-wrapper flex">
       <div class="no-favorite">
@@ -33,14 +32,6 @@ import { ref, inject } from "vue";
 import TheCard from "../TheCard.vue";
 import PokemonCard from "../PokemonCard/PokemonCard.vue";
 import { RouterLink } from "vue-router";
-
-defineProps({
-  currentNav: { type: String, default: "about" },
-  isShiny: {
-    type: Boolean,
-    required: true,
-  },
-});
 
 const currentPokemon = ref<string>("");
 

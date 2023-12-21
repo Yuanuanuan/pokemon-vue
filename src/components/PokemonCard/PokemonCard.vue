@@ -68,10 +68,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, computed, inject } from "vue";
+import { ref, watch, computed, inject, Ref } from "vue";
 
 import { pokemonInstance } from "../../api/pokemonInstance.ts";
-import { IPokemonWithId } from "../../type/IPokemon";
+import { IPokemonWithId, NavList } from "../../type/IPokemon";
 
 import BackIcon from "../../assets/icons/BackIcon.vue";
 import LoveIcon from "../../assets/icons/LoveIcon.vue";
@@ -80,28 +80,25 @@ import TheMoves from "./TheMoves.vue";
 
 const currentPokemon = ref<IPokemonWithId>();
 const bgColor = ref<string>("");
-const currentNav = ref("about");
+const currentNav = ref<NavList>("about");
 
 const props = defineProps({
   url: {
     type: String,
     default: "",
   },
-  isShiny: {
-    type: Boolean,
-    required: true,
-  },
 });
 
 const addFavorite = inject<(url: string) => void>("addFavorite");
 const lovePokemon = inject<string[]>("lovePokemon");
+const isShiny = inject<Ref<boolean>>("isShiny");
 
-function changeNav(val: string) {
+function changeNav(val: NavList) {
   currentNav.value = val;
 }
 
 async function fetchData() {
-  if (props.url.length === 0) return;
+  if (!props.url.length) return;
 
   try {
     const { data } = await pokemonInstance.get<IPokemonWithId>(props.url);
@@ -114,7 +111,7 @@ async function fetchData() {
 
 const imgUrl = computed(() => {
   if (!currentPokemon.value) return;
-  return props.isShiny
+  return isShiny?.value
     ? currentPokemon.value.sprites.other.home.front_shiny
     : currentPokemon.value.sprites.other.home.front_default;
 });
